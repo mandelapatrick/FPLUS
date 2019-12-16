@@ -386,7 +386,7 @@ def generate_segmentation_mask_per_iteration(shape_feature, updated_feature):
                             np.expand_dims(feature.get_feature(swapped_partID, mode='shape_only'), axis=0)
         batch_shape_feature = np.vstack((batch_shape_feature, iter_shape_feature))
         filenames.append('_'.join(['%03d' % ((iter + 1) * argopt.display_freq), fname]))
-    with cd('../../../separate_vae'):
+    with cd(f'{ROOT_DIR}/separate_vae'):
         batch_generation_from_update(4, argopt.save_dir, filenames, batch_shape_feature, argopt.load_pretrain_shape_gen, argopt.classname)#, black=False)
     # Remove generator path
     if parentPath in sys.path:
@@ -409,12 +409,12 @@ def generate_segmentation_mask_final(shape_feature, updated_feature):
     batch_shape_feature[0, swapped_partID * SHAPE_FEAT_NUM: (swapped_partID+1) * SHAPE_FEAT_NUM] = \
                            np.expand_dims(feature.get_feature(swapped_partID, mode='shape_only'), axis=0)
     filename = '_'.join(['final', fname])
-    with cd('../../../separate_vae'):
+    with cd(f'{ROOT_DIR}/separate_vae'):
         single_generation_from_update(argopt.save_dir, filename, batch_shape_feature, argopt.load_pretrain_shape_gen, argopt.classname)#, black=False)
     # Generate reconstructed
     batch_shape_feature = copy.deepcopy(shape_feature) # Use original feature for reconstruction
     filename = '_'.join(['001', fname])
-    with cd('../../../separate_vae'):
+    with cd(f'{ROOT_DIR}/separate_vae'):
         single_generation_from_update(argopt.save_dir, filename, batch_shape_feature, argopt.load_pretrain_shape_gen, argopt.classname)#, black=False)
 
     # Remove generator path
